@@ -1,0 +1,105 @@
+<html>
+	<head>
+		<script type="text/javascript" src="http://lib.sinaapp.com/js/jquery/2.2.4/jquery-2.2.4.min.js"></script>
+		<style type="text/css">
+			.visiable-view {
+				background-color: grey;
+				position: relative;
+				overflow: scroll;
+			}
+			.bgr {
+				width: 100%;
+			}
+			.bgri {
+				width: 100%;
+			}
+			.icon {
+				width: 50px;
+				height: 50px;
+				background-color: red;
+				position: absolute;
+				left: 20%;
+				top: 20%;
+			}
+			.button {
+				width: 100px;
+				height: 50px;
+				background-color: yellow;
+				position: fixed;
+				left: 0;
+				bottom: 0;
+			}
+			.button.min {
+				left: 100px;
+			}
+		</style>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				var old_w = $('.bgri').width()
+				var old_h = $('.bgri').height()
+				var l = $('.bgri').position().left;
+				var t = $('.bgri').position().top;
+				var w = old_w;
+				var h = old_h;
+
+				var scale = 1;
+
+				$('.icon').css('left', (0.2 * w - 25))
+
+				var startX = startY = endX =endY =0;    
+		        var body=$('.bgri');
+		        body.bind('touchstart',function(event){
+		            var touch = event.originalEvent.touches[0];
+		            //滑动起点的坐标
+		            startX = touch.pageX;
+		            startY = touch.pageY;
+		            // console.log("startX:"+startX+","+"startY:"+startY);
+
+		        });
+		        
+
+				$('.button').bind('click', function(){
+					if($(this).hasClass('min')) {
+						resize(-0.1);
+					} else {
+						resize(0.1);
+					}
+				})
+
+				function resize(mar) {
+					scale = scale + mar;
+					if (scale < 1) {
+						scale = 1;
+					}
+					w = old_w * scale;
+					h = old_h * scale;
+					$('.bgri').css('width', w);
+					$('.bgri').css('height', h);
+					_l= w * 0.2 - 25 * scale;
+					l = _l;
+
+					//动态调整图标位置
+					$('.icon').css('left', _l)
+
+					//动态调整图标大小
+					$('.icon').css('width', 50 * scale)
+					$('.icon').css('height', 50 * scale)
+
+
+				}
+
+			});
+			
+		</script>
+	</head>
+	<body>
+		<div class='visiable-view'>
+			<div class='bgr'>
+				<img class='bgri' src="http://images.qiniu.qiyebox.com/ebox/20200330/02d85b962280472a9a06099f5d232721.jpg">
+				<div class='icon'></div>
+			</div>	
+		</div>
+		<div class="button add" >放大</div>
+		<div class="button min">缩小</div>
+	</body>
+</html>
